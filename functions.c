@@ -9,7 +9,7 @@ int main(){
 
     printf("\n Enter two numbers to multiply: ");
     scanf("%d%d", &input0, &input1);
-    printf("\n Answer: %d", multiply(input0, input1));
+    printf("\n Answer: %d", multiply(input0, input1 ));
 
 
 }
