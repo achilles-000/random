@@ -7,8 +7,16 @@ int main(){
     int size = (rand() % 10) + 1;
     int arr[size];
 
-    printf("%d", sizeof(arr));
+    //Populate the array
+    for(int i = 0; i < size; i++){
+        arr[i] = (rand() % 100);
+    }
+    //Print every element inside the array
+    for(int i = 0; i < size; i++){
+        printf("%d ", arr[i]);
+    }
 
 
+    
     return 0;
 }
