@@ -15,7 +15,7 @@ int main(){
 
     int n = 1;
 
-    while(n < 100000){
+    while(n < 100000000){
         
         if((factor(n) - n) == 1){
             printf(" %d", n);
