@@ -7,7 +7,7 @@ struct Features{
     char symbol;
     int height;
 };
-
+//aa
 int main(){
 
 //Creates the variable features1
