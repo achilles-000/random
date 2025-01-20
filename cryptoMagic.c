@@ -60,7 +60,7 @@ void encryptFile(const char *inputFileName) {
         return;
     }
 
-    char line[121]; // Max 120 characters + 1 for null terminator
+    char line[121]; // max 120 characters
     while (fgets(line, sizeof(line), inputFile)) {
         processLineEncryption(line, outputFile);
     }
@@ -97,12 +97,11 @@ void decryptFile(const char *inputFileName) {
 
     printf("Decryption complete. Decrypted file: %s\n", outputFileName);
 }
-
-void getOutputFileName(const char *inputFileName, char *outputFileName, const char *newExtension) {
+void getOutputFileName(const char *inputFileName, char *outputFileName, const char *newExtension) { //takes original file name, returns file with new extentsion
     char *dot = strrchr(inputFileName, '.');
     if (dot) {
         size_t baseLength = dot - inputFileName;
-        strncpy(outputFileName, inputFileName, baseLength);
+        strncpy(outputFileName, inputFileName, baseLength); 
         outputFileName[baseLength] = '\0';
     } else {
         strcpy(outputFileName, inputFileName);
@@ -114,12 +113,12 @@ void processLineEncryption(const char *line, FILE *outputFile) {
     for (int i = 0; line[i] != '\0'; i++) {
         char c = line[i];
         if (c == '\t') {
-            fputs("TT", outputFile);
-        } else if (c == '\n') {
+            fputs("TT", outputFile); //places TT to represent a tab character
+        } else if (c == '\n') { // writes tihs directly to the output file to keep correct line breaks
             fputc('\n', outputFile);
-        } else {
-            int outChar = c - 16;
-            if (outChar < 32) {
+        } else { //regularly encrypt normal characters
+            int outChar = c - 16;  // subtract 16 from the ASCII character value
+            if (outChar < 32) { // if greater than 32 add 144
                 outChar = (outChar - 32) + 144;
             }
             fprintf(outputFile, "%02X", outChar);
@@ -128,21 +127,21 @@ void processLineEncryption(const char *line, FILE *outputFile) {
 }
 
 void processLineDecryption(const char *line, FILE *outputFile) {
-    for (int i = 0; line[i] != '\0';) {
-        if (line[i] == 'T' && line[i + 1] == 'T') {
+    for (int i = 0; line[i] != '\0';) { //Iterate until it reaches the NULL terminator character
+        if (line[i] == 'T' && line[i + 1] == 'T') {  //If TT place a tab character
             fputc('\t', outputFile);
             i += 2;
-        } else if (line[i] == '\n') {
+        } else if (line[i] == '\n') { //If new line place a newline directly in the output file
             fputc('\n', outputFile);
             i++;
         } else {
-            char hexPair[3] = {line[i], line[i + 1], '\0'};
+            char hexPair[3] = {line[i], line[i + 1], '\0'};  //Follows decryption written in document
             int outChar = (int)strtol(hexPair, NULL, 16);
-            outChar += 16;
-            if (outChar > 127) {
-                outChar = (outChar - 144) + 32;
+            outChar += 16;  //Adds 16 and then
+            if (outChar > 127) { //If the number is greater than 127 
+                outChar = (outChar - 144) + 32; //Do this
             }
-            fputc(outChar, outputFile);
+            fputc(outChar, outputFile); //output
             i += 2;
         }
     }
